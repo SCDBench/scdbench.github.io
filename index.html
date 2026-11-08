@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6e4e9e">
+  <meta name="description" content="SCDBench: results for LLM-based smart contract decompilation across 600 Ethereum contracts and 227,383 semantic checkpoints. NeurIPS 2026.">
+  <meta property="og:title" content="SCDBench: A Benchmark for LLM-Based Smart Contract Decompilers">
+  <meta property="og:description" content="Compare zero-shot and repaired decompilation results, complexity strata, and a second 600-contract sample.">
+  <meta property="og:type" content="website">
+  <title>SCDBench | Smart Contract Decompilation Benchmark</title>
+  <link rel="preload" href="assets/manrope-variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <script src="assets/lucide.min.js" defer></script>
+  <script src="results.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header"><div class="nav-wrap">
+    <a class="wordmark" href="#main"><i data-lucide="file-code-2" aria-hidden="true"></i>SCDBench</a>
+    <nav aria-label="Main navigation"><a href="#results">Results</a><a href="#benchmark">Benchmark</a><a href="#resources">Resources</a></nav>
+    <a class="nav-code" href="https://github.com/KaihuaQin/SCDBench" aria-label="Source code on GitHub"><i data-lucide="github" aria-hidden="true"></i></a>
+  </div></header>
+  <main id="main">
+    <section class="paper-heading section-wrap" aria-labelledby="paper-title">
+      <p class="venue">NeurIPS 2026 / Evaluations and Datasets</p>
+      <h1 id="paper-title">SCDBench</h1>
+      <p class="paper-subtitle">A Benchmark for LLM-Based Smart Contract Decompilers</p>
+      <p class="authors">Kaihua Qin<sup>1</sup><span>Dawn Song<sup>2</sup></span><span>Arthur Gervais<sup>3</sup></span></p>
+      <p class="affiliations"><span><sup>1</sup> University of Warwick</span><span><sup>2</sup> UC Berkeley</span><span><sup>3</sup> University College London</span></p>
+      <div class="paper-links">
+        <a class="button primary" href="https://arxiv.org/abs/2605.29059"><i data-lucide="file-text" aria-hidden="true"></i>Paper</a>
+        <a class="button" href="https://github.com/KaihuaQin/SCDBench"><i data-lucide="github" aria-hidden="true"></i>Code</a>
+        <a class="button" href="https://doi.org/10.7910/DVN/IPPTIX"><i data-lucide="database" aria-hidden="true"></i>Dataset</a>
+        <a class="button" href="#citation"><i data-lucide="quote" aria-hidden="true"></i>Cite</a>
+      </div>
+    </section>
+    <div class="paper-summary section-wrap">
+      <p>SCDBench evaluates LLM-based smart contract decompilers using <strong>600 real-world Ethereum contracts</strong> and <strong>227,383 semantic checkpoints</strong>. Frontier models achieve higher semantic consistency than the open-weight baseline, while GLM-5 with reasoning outperforms its instruct variant on this metric (20.7% versus 17.7% after repair). <strong>One-step compiler-guided repair improves compilation, ABI recovery, and semantic consistency for every model.</strong> However, structural success does not ensure faithful behavior. Repaired GPT-5.3-Codex leads compilation and ABI recovery, while repaired Claude Opus 4.7 achieves the highest overall semantic consistency. Even the best setting perfectly recovers only <strong>42 of 600 contracts (7.0%)</strong> under the benchmark's checks. These main findings persist on a second 600-contract sample, highlighting both the value of compiler feedback and the need for stronger semantic recovery.</p>
+    </div>
+    <section id="results" class="results-band section-space" aria-labelledby="results-title"><div class="section-wrap">
+      <div class="section-heading"><h2 id="results-title">Decompilation results</h2><p>Zero-shot generation and one-step compilation repair.</p></div>
+      <div class="result-controls">
+        <fieldset><legend>Sample</legend><div class="segmented"><label><input type="radio" name="sample" value="original" checked><span>Original</span></label><label><input type="radio" name="sample" value="second"><span>Second</span></label></div></fieldset>
+        <fieldset><legend>Complexity</legend><div class="segmented"><label><input type="radio" name="stratum" value="all" checked><span>All</span></label><label><input type="radio" name="stratum" value="easy"><span>Easy</span></label><label><input type="radio" name="stratum" value="medium"><span>Medium</span></label><label><input type="radio" name="stratum" value="hard"><span>Hard</span></label></div></fieldset>
+        <fieldset><legend>Setting</legend><div class="segmented"><label><input type="radio" name="setting" value="both" checked><span>Both</span></label><label><input type="radio" name="setting" value="initial"><span>Zero-shot</span></label><label><input type="radio" name="setting" value="repaired"><span>Repaired</span></label></div></fieldset>
+        <button class="icon-button download-results" type="button" id="download-results" aria-label="Download displayed results as CSV" title="Download results as CSV"><i data-lucide="download" aria-hidden="true"></i></button>
+      </div>
+      <div class="result-summary"><p id="sample-description">Original sample: 600 contracts and 14,553 public functions.</p><span id="result-state" aria-live="polite">All contracts / Both settings</span></div>
+      <p id="highlights-caption" class="highlights-caption">Best results after one-step repair</p>
+      <dl id="result-highlights" class="result-highlights">
+        <div><dt>Compilation</dt><dd>90.3%<span>GPT-5.3-Codex</span></dd></div>
+        <div><dt>ABI recovery</dt><dd>0.896<span>GPT-5.3-Codex</span></dd></div>
+        <div><dt>Semantic consistency</dt><dd>29.4%<span>Claude Opus 4.7</span></dd></div>
+        <div><dt>Perfect recovery</dt><dd>42 / 600<span>Claude Opus 4.7</span></dd></div>
+      </dl>
+      <div class="table-scroller" tabindex="0" role="region" aria-label="Complete model results">
+        <table class="results-table"><caption class="sr-only">Original sample results before and after one-step repair</caption><thead><tr><th scope="col">Model</th><th scope="col">Setting</th><th scope="col">Format<span>% contracts</span></th><th scope="col">Compilation<span>% contracts</span></th><th scope="col">ABI recovery<span>micro-F1</span></th><th scope="col">Semantics<span>% functions</span></th><th scope="col">Perfect recovery<span id="perfect-unit">contracts / 600</span></th></tr></thead>
+          <tbody id="results-body">
+            <tr><th scope="row">Claude Opus 4.7</th><td>Zero-shot</td><td>72.5%</td><td>56.8%</td><td>0.615</td><td><strong>22.5%</strong></td><td><strong>33 / 600</strong></td></tr>
+            <tr class="repaired-row"><th scope="row">Claude Opus 4.7</th><td>Repaired</td><td>72.5%</td><td>69.2%</td><td>0.721</td><td><strong>29.4%</strong></td><td><strong>42 / 600</strong></td></tr>
+            <tr class="model-start"><th scope="row">GPT-5.3-Codex</th><td>Zero-shot</td><td><strong>94.0%</strong></td><td><strong>70.2%</strong></td><td><strong>0.766</strong></td><td>19.6%</td><td><strong>33 / 600</strong></td></tr>
+            <tr class="repaired-row"><th scope="row">GPT-5.3-Codex</th><td>Repaired</td><td><strong>94.0%</strong></td><td><strong>90.3%</strong></td><td><strong>0.896</strong></td><td>28.0%</td><td>41 / 600</td></tr>
+            <tr class="model-start"><th scope="row">GLM-5</th><td>Zero-shot</td><td>86.7%</td><td>36.8%</td><td>0.428</td><td>9.9%</td><td>14 / 600</td></tr>
+            <tr class="repaired-row"><th scope="row">GLM-5</th><td>Repaired</td><td>86.7%</td><td>67.2%</td><td>0.697</td><td>20.7%</td><td>18 / 600</td></tr>
+            <tr class="model-start"><th scope="row">GLM-5 (instruct)</th><td>Zero-shot</td><td>90.0%</td><td>24.0%</td><td>0.287</td><td>5.8%</td><td>4 / 600</td></tr>
+            <tr class="repaired-row"><th scope="row">GLM-5 (instruct)</th><td>Repaired</td><td>90.0%</td><td>64.3%</td><td>0.658</td><td>17.7%</td><td>6 / 600</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="results-note"><strong>Bold:</strong> best within each setting. High reasoning except GLM-5 (instruct). Perfect recovery requires all benchmarked functions to pass, with no missing or spurious functions.</p>
+      <noscript><p class="results-note">The table shows the original sample. Filters and charts require JavaScript.</p></noscript>
+      <div class="chart-heading"><h3>Effect of one-step repair</h3><p class="chart-legend"><span><b class="legend-dot"></b>Zero-shot</span><span><b class="legend-dot filled"></b>Repaired</span></p></div>
+      <div class="chart-grid" id="result-charts" aria-label="Compilation and semantic consistency before and after repair"></div>
+    </div></section>
+    <section id="benchmark" class="benchmark-band section-space" aria-labelledby="benchmark-title"><div class="section-wrap">
+      <h2 id="benchmark-title">Benchmark</h2>
+      <div class="table-scroller"><table class="compact-table dataset-table"><thead><tr><th scope="col">Sample</th><th scope="col">Contracts</th><th scope="col">Public functions</th><th scope="col">Semantic checkpoints</th></tr></thead><tbody><tr><th scope="row">Original</th><td>600</td><td>14,553</td><td>227,383</td></tr><tr><th scope="row">Second</th><td>600</td><td>14,578</td><td>226,138</td></tr></tbody></table></div>
+      <p class="results-note">200 easy, 200 medium, and 200 hard contracts per sample. Original-sample code coverage: <strong>77.8%</strong>. The two samples share no contracts or selected near-duplicate clusters.</p>
+      <details class="method-details"><summary>Evaluation protocol</summary>
+        <ol class="stages">
+          <li><i data-lucide="file-check-2" aria-hidden="true"></i><h3>1. Format</h3><p>Complete Solidity and compiler settings.</p></li>
+          <li><i data-lucide="hammer" aria-hidden="true"></i><h3>2. Compilation</h3><p>A valid compiled contract.</p></li>
+          <li><i data-lucide="braces" aria-hidden="true"></i><h3>3. ABI</h3><p>Recovered public function signatures.</p></li>
+          <li><i data-lucide="git-compare-arrows" aria-hidden="true"></i><h3>4. Semantics</h3><p>Matching returns, reverts, logs, and storage changes.</p></li>
+        </ol>
+        <p class="results-note">Scores are cumulative. One-step repair uses compiler feedback on format-valid outputs that fail compilation. Contracts are sampled from source-verified Ethereum deployments. Passing finite checkpoints does not prove equivalence over all executions.</p>
+      </details>
+    </div></section>
+    <section id="resources" class="section-wrap section-space" aria-labelledby="resources-title">
+      <h2 id="resources-title">Paper and resources</h2>
+      <div class="resource-layout">
+        <a class="paper-preview" href="https://arxiv.org/abs/2605.29059"><img src="assets/paper-preview.png" width="1082" height="1400" loading="lazy" alt="First page of the SCDBench paper"></a>
+        <div class="resource-list">
+          <a class="resource-row" href="https://arxiv.org/abs/2605.29059"><i data-lucide="file-text" aria-hidden="true"></i><span><strong>Paper</strong><small>SCDBench / NeurIPS 2026</small></span><i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+          <a class="resource-row" href="https://doi.org/10.7910/DVN/IPPTIX"><i data-lucide="database" aria-hidden="true"></i><span><strong>Datasets</strong><small>Both samples and checkpoints / Harvard Dataverse</small></span><i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+          <a class="resource-row" href="https://github.com/KaihuaQin/SCDBench"><i data-lucide="github" aria-hidden="true"></i><span><strong>Code and model outputs</strong><small>Evaluation and reproduction / GitHub</small></span><i data-lucide="arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <details id="citation" class="citation-details"><summary>Citation</summary><div class="citation-code"><div class="code-toolbar"><span>BibTeX</span><button class="icon-button" id="copy-citation" type="button" title="Copy BibTeX" aria-label="Copy BibTeX citation"><i data-lucide="copy" aria-hidden="true"></i></button></div><pre><code id="bibtex">@inproceedings{qin2026scdbench,
+  title = {{SCDBench}: A Benchmark for {LLM}-Based
+           Smart Contract Decompilers},
+  author = {Qin, Kaihua and Song, Dawn and Gervais, Arthur},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year = {2026},
+  url = {https://arxiv.org/abs/2605.29059}
+}</code></pre><p id="copy-status" class="copy-status" role="status"></p></div></details>
+    </section>
+  </main>
+  <footer class="section-wrap site-footer"><span>SCDBench / NeurIPS 2026</span><a href="https://github.com/KaihuaQin/SCDBench/issues">Questions or issues<i data-lucide="arrow-up-right" aria-hidden="true"></i></a></footer>
+</body>
+</html>
